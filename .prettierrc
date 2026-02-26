@@ -14,11 +14,6 @@
     "(constants/.*|.*\\.constants$|constants)",
     "(schemas/.*|.*\\.schema(s)?$|schema(s)?)",
     "(plugins/.*|.*\\.plugin$|plugins)",
-    "(db/.*|database/.*|.*\\.(db|database)$)",
-    "(middleware/.*|.*\\.middleware$|middlewares?)",
-    "(services/.*|.*\\.service(s)?$|service(s)?)",
-    "(controllers/.*|.*\\.controller(s)?$|controller(s)?)",
-    "(routes/.*|.*\\.routes?$|routes?)",
     "(utils?/.*|.*\\.(util|utils)$|.*\\-util$)",
     "(test-utils?/.*|.*\\.test-util$|.*\\-test-util$)",
     "^(./|../)(?!.*\\.(css|scss|jpg|jpeg|png|svg)$)"

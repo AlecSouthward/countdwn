@@ -1,3 +1,7 @@
+/**
+ * @param date Any date (past/present/future).
+ * @returns Pretty string representation of the date in the format `dd MMM yyyy`, or `"1 Jan 2026"`.
+ */
 export const formatDateForDisplay = (date: Date) => {
   return date.toLocaleDateString('en-GB', {
     day: '2-digit',
@@ -6,7 +10,11 @@ export const formatDateForDisplay = (date: Date) => {
   });
 };
 
-export const displayTimeUntilFromDate = (date: Date) => {
+/**
+ * @param date A date in the future.
+ * @returns Pretty string representation of the time until `date`.
+ */
+export const getRelativeTimeUntilDate = (date: Date) => {
   const diffMs = date.getTime() - Date.now();
 
   if (diffMs < 0) return 'in the past';
@@ -26,16 +34,17 @@ export const displayTimeUntilFromDate = (date: Date) => {
   return `${years} year${years === 1 ? '' : 's'} left`;
 };
 
-export const distanceBetweenDates = (startDate: Date, endDate: Date) => {
+/**
+ * @param startDate The starting date.
+ * @param endDate The ending date.
+ * @returns The percentage between `startDate` and `endDate` based on the current date.
+ */
+export const getPercentageBetweenDates = (startDate: Date, endDate: Date) => {
   const now = Date.now();
   const start = startDate.getTime();
   const end = endDate.getTime();
 
   const percentage = ((now - start) / (end - start)) * 100;
-
-  if (percentage < 0) {
-    console.log(Date.now(), start, end, percentage);
-  }
 
   return Math.floor(Math.min(100, Math.max(0, percentage)));
 };

@@ -1,10 +1,10 @@
-import type { CountdownData } from '../types/common';
+import type { CountdownData } from '../../types/countdownTypes';
 
 import {
-  displayTimeUntilFromDate,
   formatDateForDisplay,
-  distanceBetweenDates as percentageBetweenDates,
-} from '../utils/dateUtils';
+  getRelativeTimeUntilDate,
+  getPercentageBetweenDates as percentageBetweenDates,
+} from '../../utils/dateUtils';
 
 type Props = { data: CountdownData };
 
@@ -16,7 +16,7 @@ const Countdown = ({ data }: Props) => (
       </span>
       <p className="self-end flex flex-col text-right gap-y-1 mb-0.5">
         <span className="text-md">
-          {displayTimeUntilFromDate(data.endDate)}
+          {getRelativeTimeUntilDate(data.endDate)}
         </span>
         <span className="text-sm text-neutral-600">
           {formatDateForDisplay(data.endDate)}

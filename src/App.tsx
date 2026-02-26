@@ -2,12 +2,12 @@ import { Preferences } from '@capacitor/preferences';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
 
-import type { CountdownData } from './types/common';
+import type { CountdownData } from './types/countdownTypes';
 
-import Countdown from './components/Countdown';
-import CreateNew from './components/CreateNew';
-import CreateNewButton from './components/CreateNewButton';
-import { getCountdowns, saveCountdown } from './data/main';
+import Countdown from './components/countdown/Countdown';
+import CreateNew from './components/countdown/CreateNew';
+import CreateNewButton from './components/countdown/CreateNewButton';
+import { getCountdowns, saveCountdown } from './data/countdownData';
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);

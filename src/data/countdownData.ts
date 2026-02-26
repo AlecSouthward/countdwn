@@ -1,8 +1,8 @@
 import { Preferences } from '@capacitor/preferences';
 
-import type { CountdownData } from '../types/common';
+import type { CountdownData } from '../types/countdownTypes';
 
-import { COUNTDOWN_SAVE_KEY } from '../constants/common';
+import { COUNTDOWN_SAVE_KEY } from '../constants/countdownConstants';
 
 const saveCountdowns = async (countdowns: CountdownData[]) => {
   await Preferences.set({
