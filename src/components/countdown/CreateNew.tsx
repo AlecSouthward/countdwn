@@ -23,7 +23,8 @@ const CreateNew = ({ onCreate }: Props) => {
           onChange={(evt) => setName(evt.target?.value)}
         />
 
-        <button>
+        {/* Placeholder to fix lint issue */}
+        <button onClick={() => setEndDate(new Date())}>
           <CalendarIcon className="stroke-neutral-100 w-12 h-12" />
         </button>
       </div>

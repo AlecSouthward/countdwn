@@ -17,8 +17,8 @@ export default defineConfig([
       tseslint.configs.recommended,
       reactHooks.configs.flat.recommended,
       reactRefresh.configs.vite,
+      prettierRecommended,
     ],
     languageOptions: { ecmaVersion: 2020, globals: globals.browser },
-    prettierRecommended,
   },
 ]);

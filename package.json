@@ -8,9 +8,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "format": "prettier --write ./src",
-    "format:check": "prettier --check ./src"
+    "lint": "eslint . && prettier --check .",
+    "format": "prettier --write .",
+    "test": "echo Tests not setup yet. Passing by default..."
   },
   "dependencies": {
     "@capacitor/android": "^8.1.0",
