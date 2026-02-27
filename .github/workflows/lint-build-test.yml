@@ -15,7 +15,17 @@ jobs:
         with:
           node-version: 22.x
           cache: 'npm'
-      - run: npm ci
+
+      - name: Cache node_modules
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
 
   lint:
     needs: setup
@@ -26,6 +36,13 @@ jobs:
         with:
           node-version: 22.x
           cache: 'npm'
+
+      - name: Restore node_modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+
       - run: npm run lint
 
   test:
@@ -37,6 +54,13 @@ jobs:
         with:
           node-version: 22.x
           cache: 'npm'
+
+      - name: Restore node_modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+
       - run: npm run test
 
   build:
@@ -48,4 +72,11 @@ jobs:
         with:
           node-version: 22.x
           cache: 'npm'
+
+      - name: Restore node_modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+
       - run: npm run build
