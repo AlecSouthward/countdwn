@@ -6,13 +6,16 @@
   "author": "Alec Southward",
   "license": "MIT",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "tsc -b && vite build",
+    "sync": "cap sync",
+    "android": "cap run android",
     "lint": "eslint . && prettier --check .",
     "format": "prettier --write .",
     "test": "echo Tests not setup yet. Passing by default..."
   },
   "dependencies": {
+    "@capacitor-community/date-picker": "^7.1.0",
     "@capacitor/android": "^8.1.0",
     "@capacitor/core": "^8.1.0",
     "@capacitor/preferences": "^8.0.1",

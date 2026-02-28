@@ -1,4 +1,3 @@
-import { Preferences } from '@capacitor/preferences';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
 
@@ -18,25 +17,25 @@ const App = () => {
     const testSaving = async () => {
       setIsLoading(true);
 
-      await Preferences.clear();
-      await saveCountdown({
-        name: 'Event 1',
-        startDate: new Date('1/1/2026'),
-        endDate: new Date('7/10/2026'),
-        ref: '',
-      });
-      await saveCountdown({
-        name: 'Event 2',
-        startDate: new Date('1/1/2026'),
-        endDate: new Date('5/7/2026'),
-        ref: '',
-      });
-      await saveCountdown({
-        name: 'Event 3',
-        startDate: new Date('1/1/2026'),
-        endDate: new Date('2/25/2026'),
-        ref: '',
-      });
+      // await Preferences.clear();
+      // await saveCountdown({
+      //   name: 'Event 1',
+      //   startDate: new Date('1/1/2026'),
+      //   endDate: new Date('7/10/2026'),
+      //   ref: '',
+      // });
+      // await saveCountdown({
+      //   name: 'Event 2',
+      //   startDate: new Date('1/1/2026'),
+      //   endDate: new Date('5/7/2026'),
+      //   ref: '',
+      // });
+      // await saveCountdown({
+      //   name: 'Event 3',
+      //   startDate: new Date('1/1/2026'),
+      //   endDate: new Date('2/25/2026'),
+      //   ref: '',
+      // });
 
       const savedCountdowns = await getCountdowns();
       setCountdowns(savedCountdowns);
@@ -59,11 +58,11 @@ const App = () => {
 
           {isCreateVisible ? (
             <CreateNew
-              onCreate={async () => {
+              onCreate={async (name, endDate) => {
                 await saveCountdown({
-                  name: 'testing save',
+                  name,
                   startDate: new Date(),
-                  endDate: new Date('3/1/2026'),
+                  endDate,
                   ref: '',
                 });
 

@@ -44,6 +44,10 @@ export const getPercentageBetweenDates = (startDate: Date, endDate: Date) => {
   const start = startDate.getTime();
   const end = endDate.getTime();
 
+  if (end < now) {
+    return 100;
+  }
+
   const percentage = ((now - start) / (end - start)) * 100;
 
   return Math.floor(Math.min(100, Math.max(0, percentage)));

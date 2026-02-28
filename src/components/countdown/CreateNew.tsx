@@ -1,3 +1,4 @@
+import { DatePicker } from '@capacitor-community/date-picker';
 import {
   CalendarIcon,
   PlusCircleIcon,
@@ -5,11 +6,27 @@ import {
 } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 
-type Props = { onCreate: () => void };
+type Props = { onCreate: (name: string, endDate: Date) => void };
 
 const CreateNew = ({ onCreate }: Props) => {
   const [name, setName] = useState<string | undefined>(undefined);
   const [endDate, setEndDate] = useState<Date | undefined>(undefined);
+
+  const handleDateSelect = async () => {
+    try {
+      const selectedDateData = await DatePicker.present({
+        min: new Date().toISOString(),
+        mode: 'date',
+        // theme: 'dark',
+      });
+      console.log(selectedDateData);
+      const selectedDate = new Date(selectedDateData.value);
+
+      setEndDate(selectedDate);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className="p-4 rounded-xl border-2 border-neutral-800 bg-neutral-900 flex flex-col gap-y-8 order-last">
@@ -23,16 +40,16 @@ const CreateNew = ({ onCreate }: Props) => {
           onChange={(evt) => setName(evt.target?.value)}
         />
 
-        {/* Placeholder to fix lint issue */}
-        <button onClick={() => setEndDate(new Date())}>
-          <CalendarIcon className="stroke-neutral-100 w-12 h-12" />
-        </button>
+        <CalendarIcon
+          className="stroke-neutral-100 w-12 h-12"
+          onClick={handleDateSelect}
+        />
       </div>
 
       <button
         className="flex justify-center bg-blue-400 py-2 rounded-lg mx-8 w-full min-w-30 max-w-80 h-12 self-center disabled:bg-red-400 transition-colors"
         disabled={!name || !endDate}
-        onClick={onCreate}
+        onClick={() => onCreate(name!, endDate!)}
       >
         {!name || !endDate ? (
           <XCircleIcon className="stroke-neutral-100 w-8 h-8 self-center" />
