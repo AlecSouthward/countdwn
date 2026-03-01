@@ -15,7 +15,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "sync": "cap sync",
-    "test": "echo Tests not setup yet. Passing by default...",
+    "test": "vitest run",
     "lint": "eslint . && prettier --check .",
     "format": "prettier --write ."
   },

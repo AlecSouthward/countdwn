@@ -61,7 +61,7 @@ jobs:
           path: node_modules
           key: node-modules-${{ hashFiles('package-lock.json') }}
 
-      - run: npm run test
+      - run: npm test
 
   build:
     needs: [lint, test]
