@@ -5,11 +5,11 @@
     {
       "src": "assets/icon/icon.svg",
       "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "type": "image/svg"
     },
     {
       "src": "assets/icon/favicon.svg",
-      "type": "image/x-con",
+      "type": "image/svg",
       "sizes": "512x512",
       "purpose": "maskable"
     }

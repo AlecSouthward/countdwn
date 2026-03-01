@@ -1,2 +1,16 @@
 /* For information on how to create your own theme, please refer to:
 http://ionicframework.com/docs/theming/ */
+/* Set variables for all modes */
+
+:root {
+  --progress-background: rgb(10, 10, 10);
+  --progress-fill: rgb(81, 162, 255);
+}
+
+.list-md {
+  --ion-item-background: rgb(10, 10, 10);
+}
+
+* {
+  --color: rgb(240, 240, 240);
+}
