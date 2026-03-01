@@ -1,81 +1,49 @@
-import { ArrowPathIcon } from '@heroicons/react/24/outline';
-import { useEffect, useState } from 'react';
+/* Theme variables */
+import './theme/variables.css';
+import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import { IonReactRouter } from '@ionic/react-router';
+/* Core CSS required for Ionic components to work properly */
+import '@ionic/react/css/core.css';
+import '@ionic/react/css/display.css';
+import '@ionic/react/css/flex-utils.css';
+import '@ionic/react/css/float-elements.css';
+/* Basic CSS for apps built with Ionic */
+import '@ionic/react/css/normalize.css';
+/* Optional CSS utils that can be commented out */
+import '@ionic/react/css/padding.css';
+/**
+ * Ionic Dark Mode
+ * -----------------------------------------------------
+ * For more info, please see:
+ * https://ionicframework.com/docs/theming/dark-mode
+ */
 
-import type { CountdownData } from './types/countdownTypes';
+/* import '@ionic/react/css/palettes/dark.always.css'; */
+/* import '@ionic/react/css/palettes/dark.class.css'; */
+import '@ionic/react/css/palettes/dark.system.css';
+import '@ionic/react/css/structure.css';
+import '@ionic/react/css/text-alignment.css';
+import '@ionic/react/css/text-transformation.css';
+import '@ionic/react/css/typography.css';
+import { Redirect, Route } from 'react-router-dom';
 
-import Countdown from './components/countdown/Countdown';
-import CreateNew from './components/countdown/CreateNew';
-import CreateNewButton from './components/countdown/CreateNewButton';
-import { getCountdowns, saveCountdown } from './data/countdownData';
+import Home from './pages/Home';
 
-const App = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [isCreateVisible, setIsCreateVisible] = useState(false);
-  const [countdowns, setCountdowns] = useState<CountdownData[]>([]);
+setupIonicReact();
 
-  useEffect(() => {
-    const testSaving = async () => {
-      setIsLoading(true);
-
-      // await Preferences.clear();
-      // await saveCountdown({
-      //   name: 'Event 1',
-      //   startDate: new Date('1/1/2026'),
-      //   endDate: new Date('7/10/2026'),
-      //   ref: '',
-      // });
-      // await saveCountdown({
-      //   name: 'Event 2',
-      //   startDate: new Date('1/1/2026'),
-      //   endDate: new Date('5/7/2026'),
-      //   ref: '',
-      // });
-      // await saveCountdown({
-      //   name: 'Event 3',
-      //   startDate: new Date('1/1/2026'),
-      //   endDate: new Date('2/25/2026'),
-      //   ref: '',
-      // });
-
-      const savedCountdowns = await getCountdowns();
-      setCountdowns(savedCountdowns);
-
-      setIsLoading(false);
-    };
-
-    testSaving();
-  }, [isCreateVisible]);
-
-  return (
-    <div className="m-4 p-4 gap-y-6 flex flex-col">
-      {isLoading ? (
-        <ArrowPathIcon className="stroke-blue-400 w-16 h-16 animate-spin absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%]" />
-      ) : (
-        <>
-          {countdowns.map((countdownData) => (
-            <Countdown key={countdownData.ref} data={countdownData} />
-          ))}
-
-          {isCreateVisible ? (
-            <CreateNew
-              onCreate={async (name, endDate) => {
-                await saveCountdown({
-                  name,
-                  startDate: new Date(),
-                  endDate,
-                  ref: '',
-                });
-
-                setIsCreateVisible(false);
-              }}
-            />
-          ) : (
-            <CreateNewButton onClick={() => setIsCreateVisible(true)} />
-          )}
-        </>
-      )}
-    </div>
-  );
-};
+const App: React.FC = () => (
+  <IonApp>
+    <IonReactRouter>
+      <IonRouterOutlet>
+        <Route exact path="/home">
+          <Home />
+        </Route>
+        <Route exact path="/">
+          <Redirect to="/home" />
+        </Route>
+      </IonRouterOutlet>
+    </IonReactRouter>
+  </IonApp>
+);
 
 export default App;
