@@ -3,3 +3,15 @@
   padding-top: 1rem;
   overflow-y: auto;
 }
+
+.create-button {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 1;
+}
+
+.create-countdown-container {
+  display: flex;
+  flex-direction: column;
+}
