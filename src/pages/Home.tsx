@@ -15,15 +15,26 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import { addCircleOutline } from 'ionicons/icons';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 import CountdownElement from '../components/countdown-element/CountdownElement';
 
 const list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
 
 const Home: React.FC = () => {
+  const [name, setName] = useState<string | null>(null);
+  const [endDate, setEndDate] = useState<string | null>(null);
+
   const modalRef = useRef<HTMLIonModalElement>(null);
   const modalInputRef = useRef<HTMLIonInputElement>(null);
+
+  const handleConfirm = () => {
+    if (!name || !endDate) {
+      return;
+    }
+
+    modalRef.current!.dismiss();
+  };
 
   return (
     <IonPage>
@@ -50,7 +61,14 @@ const Home: React.FC = () => {
           ))}
         </IonList>
 
-        <IonModal ref={modalRef} trigger="open-create-modal">
+        <IonModal
+          ref={modalRef}
+          trigger="open-create-modal"
+          onIonModalWillPresent={() => {
+            setName(null);
+            setEndDate(null);
+          }}
+        >
           <IonHeader>
             <IonToolbar>
               <IonButtons slot="start">
@@ -61,11 +79,13 @@ const Home: React.FC = () => {
 
               <IonTitle>Create New</IonTitle>
 
-              <IonButtons slot="end">
-                <IonButton strong={true} onClick={() => confirm()}>
-                  Confirm
-                </IonButton>
-              </IonButtons>
+              {name && endDate && (
+                <IonButtons slot="end">
+                  <IonButton strong={true} onClick={handleConfirm}>
+                    Confirm
+                  </IonButton>
+                </IonButtons>
+              )}
             </IonToolbar>
           </IonHeader>
 
@@ -77,12 +97,17 @@ const Home: React.FC = () => {
                 ref={modalInputRef}
                 type="text"
                 placeholder="Countdown Name"
+                value={name}
+                onIonInput={(evt) => setName(String(evt.target.value))}
               />
 
               <IonDatetime
                 mode="md"
                 firstDayOfWeek={1}
                 min={new Date().toISOString()}
+                value={endDate}
+                presentation="date"
+                onIonChange={(evt) => setEndDate(String(evt.target.value))}
               />
             </IonItem>
           </IonContent>
