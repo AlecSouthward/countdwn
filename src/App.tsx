@@ -1,40 +1,47 @@
-/* Theme variables */
 import './theme/variables.css';
-import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
-/* Core CSS required for Ionic components to work properly */
+import { IonApp, setupIonicReact } from '@ionic/react';
 import '@ionic/react/css/core.css';
 import '@ionic/react/css/display.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/float-elements.css';
-/* Basic CSS for apps built with Ionic */
 import '@ionic/react/css/normalize.css';
-/* import '@ionic/react/css/palettes/dark.always.css'; */
-/* import '@ionic/react/css/palettes/dark.class.css'; */
 import '@ionic/react/css/palettes/dark.system.css';
 import '@ionic/react/css/structure.css';
 import '@ionic/react/css/text-alignment.css';
 import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/typography.css';
-import { Redirect, Route } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+
+import { CountdownType } from './types/common';
+
+import { getCountdowns, saveCountdown } from './utils/dataUtils';
 
 import Home from './pages/Home';
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <Route exact path="/home">
-          <Home />
-        </Route>
-        <Route exact path="/">
-          <Redirect to="/home" />
-        </Route>
-      </IonRouterOutlet>
-    </IonReactRouter>
-  </IonApp>
-);
+const App = () => {
+  const [countdowns, setCountdowns] = useState<CountdownType[]>([]);
+
+  useEffect(() => {
+    refreshCountdowns();
+  }, []);
+
+  const refreshCountdowns = async () => {
+    setCountdowns(await getCountdowns());
+  };
+
+  const onCountdownCreated = async (name: string, endDate: Date) => {
+    await saveCountdown(name, new Date(endDate));
+
+    refreshCountdowns();
+  };
+
+  return (
+    <IonApp>
+      <Home countdowns={countdowns} onCountdownCreated={onCountdownCreated} />
+    </IonApp>
+  );
+};
 
 export default App;

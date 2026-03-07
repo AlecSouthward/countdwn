@@ -17,23 +17,30 @@ import {
 import { addCircleOutline } from 'ionicons/icons';
 import { useRef, useState } from 'react';
 
+import { CountdownType } from '../types/common';
+
 import CountdownElement from '../components/countdown-element/CountdownElement';
 
-const list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+type Props = {
+  countdowns: CountdownType[];
+  onCountdownCreated: (name: string, endDate: Date) => void;
+};
 
-const Home: React.FC = () => {
+const Home = ({ countdowns, onCountdownCreated }: Props) => {
   const [name, setName] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
 
   const modalRef = useRef<HTMLIonModalElement>(null);
   const modalInputRef = useRef<HTMLIonInputElement>(null);
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (!name || !endDate) {
       return;
     }
 
     modalRef.current!.dismiss();
+
+    onCountdownCreated(name, new Date(endDate));
   };
 
   return (
@@ -54,11 +61,17 @@ const Home: React.FC = () => {
         </IonButton>
 
         <IonList className="list" lines="none">
-          {list.map((idx) => (
-            <IonItem key={idx}>
-              <CountdownElement />
+          {countdowns.map((countdown) => (
+            <IonItem key={countdown.ref}>
+              <CountdownElement countdown={countdown} />
             </IonItem>
           ))}
+
+          {countdowns.length === 0 && (
+            <IonItem>
+              <h1>No countdowns saved.</h1>
+            </IonItem>
+          )}
         </IonList>
 
         <IonModal
