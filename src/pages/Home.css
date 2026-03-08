@@ -11,7 +11,6 @@
   z-index: 1;
 }
 
-.create-countdown-container {
-  display: flex;
+.create-countdown-container::part(native) {
   flex-direction: column;
 }

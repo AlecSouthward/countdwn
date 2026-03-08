@@ -29,8 +29,8 @@ export const getRelativeTimeUntilDate = (date: Date) => {
   const months = Math.floor(days / 30.44);
   const years = Math.floor(days / 365.25);
 
-  if (days === 0) return `today`;
-  if (days === 1) return `tomorrow`;
+  if (days === 0) return 'today';
+  if (days === 1) return 'tomorrow';
   if (days < 30) return `${days} day${days === 1 ? '' : 's'} left`;
   if (months < 12) return `${months} month${months === 1 ? '' : 's'} left`;
 

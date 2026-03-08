@@ -103,7 +103,11 @@ const Home = ({ countdowns, onCountdownCreated }: Props) => {
           </IonHeader>
 
           <IonContent className="ion-padding">
-            <IonItem lines="none" className="create-countdown-container">
+            <IonItem
+              lines="none"
+              className="create-countdown-container"
+              style={{ flexDirection: 'column' }}
+            >
               <IonInput
                 label="Countdown Name"
                 labelPlacement="stacked"
@@ -120,6 +124,7 @@ const Home = ({ countdowns, onCountdownCreated }: Props) => {
                 min={new Date().toISOString()}
                 value={endDate}
                 presentation="date"
+                size="cover"
                 onIonChange={(evt) => setEndDate(String(evt.target.value))}
               />
             </IonItem>
