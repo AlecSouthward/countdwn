@@ -11,7 +11,6 @@ import {
   IonList,
   IonModal,
   IonPage,
-  IonTitle,
   IonToolbar,
 } from '@ionic/react';
 import { addCircleOutline } from 'ionicons/icons';
@@ -90,12 +89,10 @@ const Home = ({ countdowns, onCountdownCreated }: Props) => {
                 </IonButton>
               </IonButtons>
 
-              <IonTitle>Create New</IonTitle>
-
               {name && endDate && (
                 <IonButtons slot="end">
                   <IonButton strong={true} onClick={handleConfirm}>
-                    Confirm
+                    Create
                   </IonButton>
                 </IonButtons>
               )}
@@ -110,6 +107,7 @@ const Home = ({ countdowns, onCountdownCreated }: Props) => {
             >
               <IonInput
                 label="Countdown Name"
+                fill="outline"
                 labelPlacement="stacked"
                 ref={modalInputRef}
                 type="text"

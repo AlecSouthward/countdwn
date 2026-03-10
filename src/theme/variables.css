@@ -1,14 +1,14 @@
 /* Set variables for all modes */
 
 :root {
-  --progress-background: rgb(10, 10, 10);
-  --progress-fill: rgb(81, 162, 255);
-}
+  --background: rgb(10, 10, 10);
+  --interactible: rgb(81, 162, 255);
+  --text: rgb(240, 240, 240);
 
-.list-md {
-  --ion-item-background: rgb(10, 10, 10);
+  --progress-background: var(--background);
+  --progress-fill: var(--interactible);
 }
 
 * {
-  --color: rgb(240, 240, 240);
+  --color: var(--text);
 }

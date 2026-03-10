@@ -14,3 +14,48 @@
 .create-countdown-container::part(native) {
   flex-direction: column;
 }
+
+.list-md {
+  --ion-item-background: var(--background);
+  --display: flex;
+  --justify-content: center;
+  --flex-direction: column;
+}
+
+ion-content {
+  --background: var(--background);
+}
+
+ion-header {
+  --background: var(--background);
+}
+
+ion-toolbar {
+  --background: var(--background);
+  --border-color: transparent;
+  --padding-start: 1rem;
+  --padding-end: 1rem;
+}
+
+ion-item {
+  --background: var(--background);
+}
+
+ion-input {
+  --background: var(--background);
+  --placeholder-color: #8888aa;
+  --placeholder-opacity: 1;
+
+  /* Highlight color when focused */
+  --highlight-color-focused: rgb(81, 162, 255);
+}
+
+ion-datetime {
+  --background: var(--background);
+  --background-rgb: 10, 10, 10; /* RGB version for transparency effects */
+}
+
+ion-modal ion-input {
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
