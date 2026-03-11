@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package dev.asouth.countdwn;
 
 import com.getcapacitor.BridgeActivity;
 

@@ -9,6 +9,11 @@
   --progress-fill: var(--interactible);
 }
 
+body {
+  --ion-background-color: var(--background);
+  --ion-text-color: var(--text);
+}
+
 * {
   --color: var(--text);
 }

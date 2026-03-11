@@ -4,15 +4,15 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "io.ionic.starter",
+  "applicationId": "dev.asouth.countdwn",
   "variantName": "release",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 2,
-      "versionName": "0.1.0",
+      "versionCode": 3,
+      "versionName": "0.1.1",
       "outputFile": "countdwn.apk"
     }
   ],
