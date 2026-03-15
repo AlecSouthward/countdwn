@@ -6,7 +6,7 @@
 
 .create-button {
   position: absolute;
-  bottom: 1rem;
+  bottom: 2rem;
   right: 1rem;
   z-index: 1;
 }
