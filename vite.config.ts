@@ -9,8 +9,17 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/setupTests.ts',
-    isolate: false,
+    isolate: true,
     fileParallelism: false,
-    pool: 'threads',
+    pool: 'forks',
+    clearMocks: true,
+    restoreMocks: true,
+    coverage: {
+      enabled: true,
+      provider: 'v8',
+      exclude: ['./src/types/**', '**/node_modules/**'],
+      // thresholds: { '100': true }, // Only really for v1.0.0 (maybe)
+      clean: true,
+    },
   },
 });
