@@ -2,11 +2,27 @@
   display: flex;
   flex-direction: column;
   width: 100vw;
+  height: 6.25rem;
   margin-bottom: 1rem;
-  background-color: rgb(20, 20, 20);
+  background-color: var(--inner-background);
   border-radius: 1rem;
   padding: 1rem;
-  border: solid rgb(40, 40, 40) 2px;
+  border: solid var(--border) 2px;
+  box-sizing: border-box;
+  overflow-y: hidden;
+  transition:
+    height 400ms ease-in-out,
+    background-color 200ms,
+    border-color 300ms;
+}
+
+.element-container:hover {
+  background-color: var(--active-background);
+  border-color: var(--border-active);
+}
+
+.element-container.active {
+  height: 11rem;
 }
 
 .element-container > .info {
@@ -47,7 +63,59 @@
 
 .progress-container > .progress-bar {
   border-radius: 1rem;
-  height: 100%;
+  min-height: 0.5rem;
   width: 50%;
   background-color: var(--progress-fill);
+}
+
+/* Styles for selected section */
+
+.countdown-selected-section {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.countdown-selected-section > hr {
+  margin: 0.25rem 2rem 1rem;
+  border-top: 2px solid var(--border);
+}
+
+.countdown-edit-container {
+  z-index: 1;
+  display: flex;
+  justify-content: space-around;
+  column-gap: 1rem;
+  padding: 0 0.5rem;
+  opacity: 0;
+  transition: opacity 800ms ease-out;
+}
+
+.active .countdown-edit-container {
+  opacity: 1;
+}
+
+.countdown-edit-container > button {
+  border: 2px solid var(--border);
+  border-radius: 0.5rem;
+  height: 2.5rem;
+  flex: 1;
+  background-color: transparent;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 0.5rem;
+}
+
+.countdown-edit-container > button.red {
+  border: 2px solid var(--red-border);
+}
+
+.countdown-edit-container > button > ion-icon {
+  font-size: 1rem;
+}
+
+.countdown-edit-container > button.red > ion-icon,
+.countdown-edit-container > button.red > span {
+  color: var(--red-text);
 }

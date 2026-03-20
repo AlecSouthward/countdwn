@@ -51,6 +51,16 @@ const Home = ({ countdowns, onCountdownCreated }: Props) => {
     onCountdownCreated(name, new Date(endDate));
   };
 
+  const handleCountdownClick = (ref: string) => {
+    if (ref === selectedCountdownRef) {
+      setSelectedCountdownRef(null);
+
+      return;
+    }
+
+    setSelectedCountdownRef(ref);
+  };
+
   return (
     <IonPage>
       <IonContent fullscreen className="list-container">
@@ -71,7 +81,11 @@ const Home = ({ countdowns, onCountdownCreated }: Props) => {
         <IonList className="list" lines="none">
           {sortedCountdowns.map((countdown) => (
             <IonItem key={countdown.ref}>
-              <CountdownElement countdown={countdown} />
+              <CountdownElement
+                countdown={countdown}
+                selectedRef={selectedCountdownRef}
+                handleClick={() => handleCountdownClick(countdown.ref)}
+              />
             </IonItem>
           ))}
 
