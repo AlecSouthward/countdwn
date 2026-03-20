@@ -14,7 +14,7 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import { addCircleOutline } from 'ionicons/icons';
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 import { CountdownType } from '../types/common';
 
@@ -28,6 +28,15 @@ type Props = {
 const Home = ({ countdowns, onCountdownCreated }: Props) => {
   const [name, setName] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
+  const [selectedCountdownRef, setSelectedCountdownRef] = useState<
+    string | null
+  >(null);
+
+  const sortedCountdowns = useMemo(
+    () =>
+      countdowns.toSorted((a, b) => b.endDate.getTime() - a.endDate.getTime()),
+    [countdowns]
+  );
 
   const modalRef = useRef<HTMLIonModalElement>(null);
   const modalInputRef = useRef<HTMLIonInputElement>(null);
@@ -60,7 +69,7 @@ const Home = ({ countdowns, onCountdownCreated }: Props) => {
         </IonButton>
 
         <IonList className="list" lines="none">
-          {countdowns.map((countdown) => (
+          {sortedCountdowns.map((countdown) => (
             <IonItem key={countdown.ref}>
               <CountdownElement countdown={countdown} />
             </IonItem>
