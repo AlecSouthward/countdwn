@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react';
+import { vi } from 'vitest';
 
 import CountdownElement from './CountdownElement';
 
@@ -11,6 +12,8 @@ test('renders without crashing', () => {
         startDate: new Date(),
         endDate: new Date(),
       }}
+      handleClick={vi.fn()}
+      selectedRef={null}
     />
   );
 

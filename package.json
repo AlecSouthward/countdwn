@@ -17,7 +17,8 @@
     "sync": "cap sync",
     "test": "vitest run",
     "lint": "eslint . && prettier --check .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "precommit": "npm run lint && npm run test && npm run build"
   },
   "dependencies": {
     "@capacitor/android": "^8.1.0",
