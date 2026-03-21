@@ -16,6 +16,8 @@ type Props = {
   handleClick: () => void;
 };
 
+// TODO: Solve the hydration issue with the descendant button
+
 const CountdownElement = ({ countdown, selectedRef, handleClick }: Props) => {
   const isSelected = countdown.ref === selectedRef;
   const progressPercent = getPercentageBetweenDates(
