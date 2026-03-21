@@ -18,6 +18,10 @@ type Props = {
 
 const CountdownElement = ({ countdown, selectedRef, handleClick }: Props) => {
   const isSelected = countdown.ref === selectedRef;
+  const progressPercent = getPercentageBetweenDates(
+    countdown.startDate,
+    countdown.endDate
+  );
 
   return (
     <button
@@ -25,10 +29,21 @@ const CountdownElement = ({ countdown, selectedRef, handleClick }: Props) => {
       onClick={handleClick}
     >
       <div className="info">
-        <p>{countdown.name ?? 'None provided.'}</p>
+        <p className={cn(progressPercent === 100 ? 'complete' : undefined)}>
+          {countdown.name ?? 'None provided.'}
+        </p>
 
         <div className="date-info">
-          <p className="time-until-info">
+          <p
+            className={cn(
+              'time-until-info',
+              progressPercent === 100
+                ? 'complete'
+                : progressPercent >= 90
+                  ? 'near'
+                  : undefined
+            )}
+          >
             {getRelativeTimeUntilDate(countdown.endDate)}
           </p>
           <p>{countdown.endDate.toLocaleDateString()}</p>
@@ -37,14 +52,15 @@ const CountdownElement = ({ countdown, selectedRef, handleClick }: Props) => {
 
       <div className="progress-container">
         <div
-          className="progress-bar"
-          style={{
-            width:
-              getPercentageBetweenDates(
-                countdown.startDate,
-                countdown.endDate
-              ) + '%',
-          }}
+          className={cn(
+            'progress-bar',
+            progressPercent === 100
+              ? 'complete'
+              : progressPercent >= 90
+                ? 'near'
+                : undefined
+          )}
+          style={{ width: progressPercent + '%' }}
         />
       </div>
 

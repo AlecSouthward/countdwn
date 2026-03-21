@@ -35,6 +35,10 @@
   margin: 0;
 }
 
+.element-container > .info > p.complete {
+  color: var(--text-complete);
+}
+
 .element-container > .info > .date-info {
   display: flex;
   justify-content: space-between;
@@ -46,10 +50,21 @@
   text-align: end;
   padding: 0;
   margin: 0 0 0.7rem 0;
+  color: var(--text-secondary);
 }
 
 .element-container > .info > .date-info > .time-until-info {
   font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--text);
+}
+
+.element-container > .info > .date-info > .time-until-info.near {
+  color: var(--text-near);
+}
+
+.element-container > .info > .date-info > .time-until-info.complete {
+  color: var(--text-complete);
 }
 
 .element-container > .progress-container {
@@ -64,6 +79,14 @@
   min-height: 0.5rem;
   width: 50%;
   background-color: var(--progress-fill);
+}
+
+.progress-bar.complete {
+  background-color: var(--progress-complete-fill);
+}
+
+.progress-bar.near {
+  background-color: var(--progress-near-fill);
 }
 
 /* Styles for selected section */
