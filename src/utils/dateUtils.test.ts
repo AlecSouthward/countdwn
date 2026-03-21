@@ -41,13 +41,13 @@ describe('Date Utils', () => {
   });
 
   describe('getRelativeTimeUntilDate', () => {
-    test('in the past', () => {
+    test('past', () => {
       vi.setSystemTime('02-01-2026');
       const date = new Date('01-01-2026');
 
       const percentage = DateUtils.getRelativeTimeUntilDate(date);
 
-      expect(percentage).toBe('in the past');
+      expect(percentage).toBe('past');
     });
 
     test('today', () => {
@@ -68,49 +68,49 @@ describe('Date Utils', () => {
       expect(percentage).toBe('tomorrow');
     });
 
-    test('3 days left', () => {
+    test('3 days', () => {
       vi.setSystemTime('01-01-2026');
       const date = new Date('01-04-2026');
 
       const percentage = DateUtils.getRelativeTimeUntilDate(date);
 
-      expect(percentage).toBe('3 days left');
+      expect(percentage).toBe('3 days');
     });
 
-    test('1 month left', () => {
+    test('1 month', () => {
       vi.setSystemTime('1 Jan 2026');
       const date = new Date('1 Feb 2026');
 
       const percentage = DateUtils.getRelativeTimeUntilDate(date);
 
-      expect(percentage).toBe('1 month left');
+      expect(percentage).toBe('1 month');
     });
 
-    test('2 months left', () => {
+    test('2 months', () => {
       vi.setSystemTime('1 Jan 2026');
       const date = new Date('15 Feb 2026');
 
       const percentage = DateUtils.getRelativeTimeUntilDate(date);
 
-      expect(percentage).toBe('2 months left');
+      expect(percentage).toBe('2 months');
     });
 
-    test('1 year left', () => {
+    test('1 year', () => {
       vi.setSystemTime('1 Jan 2026');
       const date = new Date('1 Jan 2027');
 
       const percentage = DateUtils.getRelativeTimeUntilDate(date);
 
-      expect(percentage).toBe('1 year left');
+      expect(percentage).toBe('1 year');
     });
 
-    test('2 years left', () => {
+    test('2 years', () => {
       vi.setSystemTime('1 Jan 2026');
       const date = new Date('1 Jan 2028');
 
       const percentage = DateUtils.getRelativeTimeUntilDate(date);
 
-      expect(percentage).toBe('2 years left');
+      expect(percentage).toBe('2 years');
     });
   });
 });

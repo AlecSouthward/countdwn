@@ -20,7 +20,7 @@ export const getRelativeTimeUntilDate = (date: Date) => {
 
   const diffMs = date.getTime() - nowDate.getTime();
 
-  if (diffMs < 0) return 'in the past';
+  if (diffMs < 0) return 'past';
 
   const seconds = Math.floor(diffMs / 1000);
   const minutes = Math.floor(seconds / 60);
@@ -31,10 +31,10 @@ export const getRelativeTimeUntilDate = (date: Date) => {
 
   if (days === 0) return 'today';
   if (days === 1) return 'tomorrow';
-  if (days <= 30) return `${days} days left`;
-  if (months < 12) return `${months} month${months === 1 ? '' : 's'} left`;
+  if (days <= 30) return `${days} days`;
+  if (months < 12) return `${months} month${months === 1 ? '' : 's'}`;
 
-  return `${years} year${years === 1 ? '' : 's'} left`;
+  return `${years} year${years === 1 ? '' : 's'}`;
 };
 
 /**
