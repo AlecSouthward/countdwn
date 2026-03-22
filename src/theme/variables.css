@@ -4,6 +4,7 @@
   --background: rgb(10, 10, 10);
   --inner-background: rgb(20, 20, 20);
   --active-background: rgb(25, 25, 25);
+  --red-background: rgba(255, 95, 95, 0.13);
   --border: rgb(40, 40, 40);
   --border-active: rgb(70, 70, 70);
   --interactible: rgb(81, 162, 255);

@@ -26,62 +26,74 @@ const CountdownElement = ({ countdown, selectedRef, handleClick }: Props) => {
   );
 
   return (
-    <button
-      className={cn('element-container', isSelected ? 'active' : undefined)}
-      onClick={handleClick}
-    >
-      <div className="info">
-        <p className={cn(progressPercent === 100 ? 'complete' : undefined)}>
-          {countdown.name ?? 'None provided.'}
-        </p>
-
-        <div className="date-info">
-          <p
-            className={cn(
-              'time-until-info',
-              progressPercent === 100
-                ? 'complete'
-                : progressPercent >= 90
-                  ? 'near'
-                  : undefined
-            )}
-          >
-            {getRelativeTimeUntilDate(countdown.endDate)}
+    <div className="countdown-container">
+      <button
+        className={cn('element-container', isSelected ? 'active' : undefined)}
+        onClick={handleClick}
+      >
+        <div className="info">
+          <p className={cn(progressPercent === 100 ? 'complete' : undefined)}>
+            {countdown.name ?? 'None provided.'}
           </p>
-          <p>{countdown.endDate.toLocaleDateString()}</p>
-        </div>
-      </div>
 
-      <div className="progress-container">
-        <div
-          className={cn(
-            'progress-bar',
-            progressPercent === 100
-              ? 'complete'
-              : progressPercent >= 90
-                ? 'near'
-                : undefined
+          {!isSelected && (
+            <div className="date-info">
+              <p
+                className={cn(
+                  'time-until-info',
+                  progressPercent === 100
+                    ? 'complete'
+                    : progressPercent >= 90
+                      ? 'near'
+                      : undefined
+                )}
+              >
+                {getRelativeTimeUntilDate(countdown.endDate)}
+              </p>
+              <p>{countdown.endDate.toLocaleDateString()}</p>
+            </div>
           )}
-          style={{ width: progressPercent + '%' }}
-        />
-      </div>
+        </div>
 
-      <div className="countdown-selected-section">
+        {!isSelected && (
+          <div className="progress-container">
+            <div
+              className={cn(
+                'progress-bar',
+                progressPercent === 100
+                  ? 'complete'
+                  : progressPercent >= 90
+                    ? 'near'
+                    : undefined
+              )}
+              style={{ width: progressPercent + '%' }}
+            />
+          </div>
+        )}
+
+        {/* <div className="countdown-selected-section">
         <hr />
 
         <div className="countdown-edit-container">
-          <button>
+          
+        </div>
+      </div> */}
+      </button>
+
+      {isSelected && (
+        <>
+          <button className="selected-button">
             <IonIcon md={create} />
             <span>Edit</span>
           </button>
 
-          <button className="red">
+          <button className="selected-button red">
             <IonIcon md={trash} />
             <span>Delete</span>
           </button>
-        </div>
-      </div>
-    </button>
+        </>
+      )}
+    </div>
   );
 };
 
