@@ -8,6 +8,7 @@
   --border: rgb(40, 40, 40);
   --border-active: rgb(70, 70, 70);
   --interactible: rgb(81, 162, 255);
+  --interactible-glow: rgba(81, 162, 255, 0.3);
   --text: rgb(240, 240, 240);
   --text-secondary: rgb(100, 100, 100);
   --text-complete: var(--text-secondary);

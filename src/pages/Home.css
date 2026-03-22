@@ -9,6 +9,9 @@
   bottom: 2rem;
   right: 1rem;
   z-index: 1;
+  box-shadow: 2px 2px 48px 4px var(--interactible-glow);
+  background-color: var(--interactible-glow);
+  border-radius: 100%;
 }
 
 .create-countdown-container::part(native) {
