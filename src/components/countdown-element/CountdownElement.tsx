@@ -6,6 +6,7 @@ import { CountdownType } from '../../types/common';
 
 import { cn } from '../../utils/classes';
 import {
+  formatDateForDisplay,
   getPercentageBetweenDates,
   getRelativeTimeUntilDate,
 } from '../../utils/dateUtils';
@@ -59,7 +60,7 @@ const CountdownElement = ({
                   {getRelativeTimeUntilDate(countdown.endDate)}
                 </p>
               )}
-              <p>{countdown.endDate.toLocaleDateString()}</p>
+              <p>{formatDateForDisplay(countdown.endDate)}</p>
             </div>
           )}
         </div>

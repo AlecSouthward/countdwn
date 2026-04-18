@@ -3,10 +3,10 @@
  * @returns Pretty string representation of the date in the format `dd MMM yyyy`, or `"1 Jan 2026"`.
  */
 export const formatDateForDisplay = (date: Date) => {
-  return date.toLocaleDateString('en-GB', {
+  return date.toLocaleDateString('en', {
     day: '2-digit',
     month: 'short',
-    year: 'numeric',
+    year: '2-digit',
   });
 };
 
