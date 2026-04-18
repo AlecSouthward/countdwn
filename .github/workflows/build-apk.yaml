@@ -5,32 +5,9 @@ on:
     types: [published]
 
 jobs:
-  setup:
-    name: Install Dependencies
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22.x
-          cache: 'npm'
-
-      - name: Cache node_modules
-        id: cache
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: node-modules-${{ hashFiles('package-lock.json') }}
-
-      - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
-
   build-web:
     name: Build Web Assets
     runs-on: ubuntu-latest
-    needs: setup
 
     steps:
       - uses: actions/checkout@v4
@@ -39,11 +16,8 @@ jobs:
           node-version: 22.x
           cache: 'npm'
 
-      - name: Restore node_modules
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: node-modules-${{ hashFiles('package-lock.json') }}
+      - name: Install dependencies
+        run: npm ci
 
       - name: Build web assets
         run: npm run build
@@ -79,6 +53,9 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Set SDK path in local.properties
+        run: echo "sdk.dir=$ANDROID_SDK_ROOT" > android/local.properties
+
       - name: Make Gradlew executable
         run: chmod +x android/gradlew
 
@@ -105,22 +82,19 @@ jobs:
           name: apk-unsigned
           path: android/app/build/outputs/apk/release/
 
-      - name: Sign APK
-        uses: r0adkll/sign-android-release@v1
-        id: sign_apk
-        with:
-          releaseDirectory: android/app/build/outputs/apk/release
-          signingKeyBase64: ${{ secrets.SIGNING_KEY_BASE64 }}
-          alias: ${{ secrets.KEY_ALIAS }}
-          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-          keyPassword: ${{ secrets.KEY_PASSWORD }}
-        env:
-          BUILD_TOOLS_VERSION: '36.0.0'
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
 
-      - name: Rename signed APK
+      - name: Sign APK
         run: |
-          mv "${{ steps.sign_apk.outputs.signedReleaseFile }}" \
-             android/app/build/outputs/apk/release/countdwn-${{ github.ref_name }}.apk
+          echo "${{ secrets.SIGNING_KEY_BASE64 }}" | base64 --decode > keystore.jks
+          $ANDROID_SDK_ROOT/build-tools/36.0.0/apksigner sign \
+            --ks keystore.jks \
+            --ks-key-alias "${{ secrets.KEY_ALIAS }}" \
+            --ks-pass pass:"${{ secrets.KEY_STORE_PASSWORD }}" \
+            --key-pass pass:"${{ secrets.KEY_PASSWORD }}" \
+            --out android/app/build/outputs/apk/release/countdwn-${{ github.ref_name }}.apk \
+            android/app/build/outputs/apk/release/app-release-unsigned.apk
 
       - name: Upload APK to GitHub Release
         uses: softprops/action-gh-release@v2
