@@ -28,43 +28,48 @@ const CountdownElement = ({
     countdown.startDate,
     countdown.endDate
   );
+  const isComplete = progressPercent === 100;
 
   return (
-    <div className="countdown-container">
+    <div
+      className={cn('countdown-container', isComplete ? 'complete' : undefined)}
+    >
       <button
         className={cn('element-container', isSelected ? 'active' : undefined)}
         onClick={handleClick}
       >
         <div className="info">
-          <p className={cn(progressPercent === 100 ? 'complete' : undefined)}>
+          <p className={cn(isComplete ? 'complete' : undefined)}>
             {countdown.name ?? 'None provided.'}
           </p>
 
           {!isSelected && (
             <div className="date-info">
-              <p
-                className={cn(
-                  'time-until-info',
-                  progressPercent === 100
-                    ? 'complete'
-                    : progressPercent >= 90
-                      ? 'near'
-                      : undefined
-                )}
-              >
-                {getRelativeTimeUntilDate(countdown.endDate)}
-              </p>
+              {!isComplete && (
+                <p
+                  className={cn(
+                    'time-until-info',
+                    isComplete
+                      ? 'complete'
+                      : progressPercent >= 90
+                        ? 'near'
+                        : undefined
+                  )}
+                >
+                  {getRelativeTimeUntilDate(countdown.endDate)}
+                </p>
+              )}
               <p>{countdown.endDate.toLocaleDateString()}</p>
             </div>
           )}
         </div>
 
-        {!isSelected && (
+        {!isSelected && !isComplete && (
           <div className="progress-container">
             <div
               className={cn(
                 'progress-bar',
-                progressPercent === 100
+                isComplete
                   ? 'complete'
                   : progressPercent >= 90
                     ? 'near'

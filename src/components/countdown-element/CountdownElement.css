@@ -8,6 +8,11 @@
   margin-bottom: 1rem;
 }
 
+.countdown-container.complete,
+.countdown-container.complete > .element-container {
+  height: 3.5rem;
+}
+
 .element-container {
   display: flex;
   flex-direction: column;
@@ -68,6 +73,10 @@
   color: var(--text-secondary);
 }
 
+.complete > .element-container > .info > .date-info > p {
+  margin: auto;
+}
+
 .element-container > .info > .date-info > .time-until-info {
   font-size: 1.1rem;
   font-weight: bold;
@@ -118,6 +127,11 @@
   justify-content: center;
   align-items: center;
   row-gap: 0.5rem;
+}
+
+.complete > .selected-button {
+  height: 3.5rem;
+  row-gap: 0.25rem;
 }
 
 .selected-button.red {
