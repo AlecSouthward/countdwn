@@ -37,16 +37,16 @@ jobs:
         run: npx cap sync android
 
       - name: Decode keystore
-        run: echo "${{ secrets.RELEASE_KEYSTORE }}" | base64 --decode > android/release.jks
+        run: echo "${{ secrets.SIGNING_KEY_BASE64 }}" | base64 --decode > android/release.jks
 
       - name: Build & sign APK
         run: |
           npx cap build android \
             --androidreleasetype APK \
             --keystorepath android/release.jks \
-            --keystorepass ${{ secrets.RELEASE_KEYSTORE_PASSWORD }} \
-            --keystorealias release \
-            --keystorealiaspass ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
+            --keystorepass ${{ secrets.KEY_STORE_PASSWORD }} \
+            --keystorealias ${{ secrets.KEY_ALIAS }} \
+            --keystorealiaspass ${{ secrets.KEY_PASSWORD }}
 
       - name: Upload APK to release
         uses: softprops/action-gh-release@v2

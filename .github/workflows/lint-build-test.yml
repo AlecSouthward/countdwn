@@ -112,5 +112,14 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync android
 
-      - name: Build APK
-        run: npx cap build android --androidreleasetype APK --no-sign
+      - name: Decode keystore
+        run: echo "${{ secrets.SIGNING_KEY_BASE64 }}" | base64 --decode > android/release.jks
+
+      - name: Build & sign APK
+        run: |
+          npx cap build android \
+            --androidreleasetype APK \
+            --keystorepath android/release.jks \
+            --keystorepass ${{ secrets.KEY_STORE_PASSWORD }} \
+            --keystorealias ${{ secrets.KEY_ALIAS }} \
+            --keystorealiaspass ${{ secrets.KEY_PASSWORD }}
