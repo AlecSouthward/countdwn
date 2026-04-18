@@ -80,3 +80,26 @@ jobs:
           key: node-modules-${{ hashFiles('package-lock.json') }}
 
       - run: npm run build
+
+  android-build:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: 'npm'
+
+      - name: Restore node_modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+
+      - name: Build & verify Android APK
+        uses: bytevictor/action-capacitor-android@v2
+        with:
+          build-command: npm run build
+          web-dir: dist
