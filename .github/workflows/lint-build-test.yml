@@ -99,7 +99,7 @@ jobs:
           key: node-modules-${{ hashFiles('package-lock.json') }}
 
       - name: Build & verify Android APK
-        uses: bytevictor/action-capacitor-android@v2
+        uses: Narottam04/action-capacitor-android@v1.0.0
         with:
           build-command: npm run build
           web-dir: dist
