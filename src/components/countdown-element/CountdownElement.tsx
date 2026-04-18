@@ -14,11 +14,15 @@ type Props = {
   countdown: CountdownType;
   selectedRef: string | null;
   handleClick: () => void;
+  handleDeleteClick: (ref: string) => void;
 };
 
-// TODO: Solve the hydration issue with the descendant button
-
-const CountdownElement = ({ countdown, selectedRef, handleClick }: Props) => {
+const CountdownElement = ({
+  countdown,
+  selectedRef,
+  handleClick,
+  handleDeleteClick,
+}: Props) => {
   const isSelected = countdown.ref === selectedRef;
   const progressPercent = getPercentageBetweenDates(
     countdown.startDate,
@@ -70,14 +74,6 @@ const CountdownElement = ({ countdown, selectedRef, handleClick }: Props) => {
             />
           </div>
         )}
-
-        {/* <div className="countdown-selected-section">
-        <hr />
-
-        <div className="countdown-edit-container">
-          
-        </div>
-      </div> */}
       </button>
 
       {isSelected && (
@@ -87,7 +83,10 @@ const CountdownElement = ({ countdown, selectedRef, handleClick }: Props) => {
             <span>Edit</span>
           </button>
 
-          <button className="selected-button red">
+          <button
+            className="selected-button red"
+            onClick={() => handleDeleteClick(countdown.ref)}
+          >
             <IonIcon md={trash} />
             <span>Delete</span>
           </button>

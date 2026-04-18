@@ -14,7 +14,11 @@ import { useEffect, useState } from 'react';
 
 import { CountdownType } from './types/common';
 
-import { getCountdowns, saveCountdown } from './utils/dataUtils';
+import {
+  getCountdowns,
+  removeCountdown,
+  saveCountdown,
+} from './utils/dataUtils';
 
 import Home from './pages/Home';
 
@@ -37,9 +41,17 @@ const App = () => {
     refreshCountdowns();
   };
 
+  const handleDeleteCountdown = async (ref: string) => {
+    await removeCountdown(ref);
+  };
+
   return (
     <IonApp>
-      <Home countdowns={countdowns} onCountdownCreated={onCountdownCreated} />
+      <Home
+        countdowns={countdowns}
+        onCountdownCreated={onCountdownCreated}
+        handleDeleteCountdown={handleDeleteCountdown}
+      />
     </IonApp>
   );
 };

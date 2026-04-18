@@ -40,7 +40,7 @@ export const getCountdowns = async (): Promise<CountdownType[]> => {
  * @param countdownRef The reference to the countdown data being deleted.
  * @see CountdownType
  */
-export const removeEvent = async (countdownRef: string) => {
+export const removeCountdown = async (countdownRef: string) => {
   const countdowns = await getCountdowns();
 
   const filteredCountdowns = countdowns.filter(

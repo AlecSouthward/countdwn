@@ -1,0 +1,44 @@
+.delete-modal-container {
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: all;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.delete-modal {
+  background-color: var(--inner-background);
+  margin: 0 2rem;
+  padding: 2rem;
+  align-self: center;
+  border-radius: 1rem;
+  box-shadow: 0 0 24px 2px black;
+}
+
+.delete-modal > h2 {
+  margin: 0;
+  margin-bottom: 2rem;
+  font-weight: bold;
+}
+
+.delete-buttons-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.delete-buttons-container > button {
+  font-weight: bold;
+  font-size: larger;
+  background-color: var(--inner-background);
+  border: 2px solid var(--border-active);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+}
+
+.delete-buttons-container > .confirm-button {
+  background-color: var(--red-background);
+  color: var(--red-text);
+  border: 2px solid var(--red-border);
+}
