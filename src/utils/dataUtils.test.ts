@@ -60,7 +60,7 @@ describe('Data Utils', () => {
       value: JSON.stringify([]),
     });
 
-    await DataUtils.removeEvent(testRef);
+    await DataUtils.removeCountdown(testRef);
 
     expect(Preferences.set).toHaveBeenCalled();
   });
