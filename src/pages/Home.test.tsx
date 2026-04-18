@@ -5,7 +5,12 @@ import Home from './Home';
 describe('Home', () => {
   test('renders without crashing', () => {
     const { baseElement } = render(
-      <Home countdowns={[]} onCountdownCreated={() => {}} />
+      <Home
+        countdowns={[]}
+        handleCreateCountdown={() => {}}
+        handleEditCountdown={() => {}}
+        handleDeleteCountdown={() => {}}
+      />
     );
 
     expect(baseElement).toBeDefined();

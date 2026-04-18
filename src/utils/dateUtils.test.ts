@@ -7,7 +7,7 @@ describe('Date Utils', () => {
     const date = new Date('01-01-2026');
     const formattedDate = DateUtils.formatDateForDisplay(date);
 
-    expect(formattedDate).toBe('01 Jan 2026');
+    expect(formattedDate).toBe('Jan 01, 26');
   });
 
   describe('getPercentageBetweenDates', () => {

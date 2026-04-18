@@ -5,6 +5,15 @@ import { defineConfig } from 'vite';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          ionic: ['@ionic/react', '@ionic/react-router', '@ionic/core'],
+        },
+      },
+    },
+  },
   test: {
     globals: true,
     environment: 'jsdom',

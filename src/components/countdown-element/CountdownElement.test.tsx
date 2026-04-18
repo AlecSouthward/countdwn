@@ -1,6 +1,8 @@
 import { render } from '@testing-library/react';
 import { vi } from 'vitest';
 
+import { CountdownType } from '../../types/common';
+
 import CountdownElement from './CountdownElement';
 
 test('renders without crashing', () => {
@@ -14,6 +16,12 @@ test('renders without crashing', () => {
       }}
       handleClick={vi.fn()}
       selectedRef={null}
+      handleDeleteClick={(ref: string) => {
+        throw new Error('Function not implemented. ' + ref);
+      }}
+      handleEditClick={(countdown: CountdownType) => {
+        throw new Error('Function not implemented. ' + countdown.name);
+      }}
     />
   );
 

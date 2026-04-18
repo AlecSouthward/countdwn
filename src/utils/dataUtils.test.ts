@@ -72,7 +72,7 @@ describe('Data Utils', () => {
 
     const countdowns = await DataUtils.getCountdowns();
 
-    expect(countdowns).toEqual([testCountdown]);
+    expect(countdowns).toEqual({ [testCountdown.ref]: testCountdown });
     expect(Preferences.get).toHaveBeenCalled();
   });
 });
