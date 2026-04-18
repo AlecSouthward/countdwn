@@ -81,7 +81,7 @@ jobs:
 
       - run: npm run build
 
-  test-android-build:
+  android-build:
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -122,7 +122,7 @@ jobs:
         run: |
           npx cap build android \
             --androidreleasetype APK \
-            --keystorepath android/release.jks \
+            --keystorepath release.jks \
             --keystorepass ${{ secrets.KEY_STORE_PASSWORD }} \
             --keystorealias ${{ secrets.KEY_ALIAS }} \
             --keystorealiaspass ${{ secrets.KEY_PASSWORD }}
