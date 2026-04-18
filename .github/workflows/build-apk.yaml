@@ -11,16 +11,49 @@ jobs:
   build-apk:
     name: Build, Sign & Upload APK
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Build & sign APK (Capacitor)
-        uses: Narottam04/action-capacitor-android@v1.0.0
+      - uses: actions/setup-node@v4
         with:
-          build-command: npm run build
-          web-dir: dist
-          keystore-content: ${{ secrets.RELEASE_KEYSTORE }}
-          keystore-password: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
-          github-token: ${{ secrets.ACCESS_TOKEN }}
+          node-version: 22.x
+          cache: 'npm'
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build web assets
+        run: npm run build
+
+      - name: Install Capacitor Android
+        run: npm i @capacitor/android
+
+      - name: Add Android platform
+        run: npx cap add android
+
+      - name: Sync Capacitor
+        run: npx cap sync android
+
+      - name: Decode keystore
+        run: echo "${{ secrets.RELEASE_KEYSTORE }}" | base64 --decode > android/release.jks
+
+      - name: Build & sign APK
+        run: |
+          npx cap build android \
+            --androidreleasetype APK \
+            --keystorepath android/release.jks \
+            --keystorepass ${{ secrets.RELEASE_KEYSTORE_PASSWORD }} \
+            --keystorealias release \
+            --keystorealiaspass ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
+
+      - name: Upload APK to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: android/app/build/outputs/apk/release/app-release-signed.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
