@@ -81,7 +81,7 @@ jobs:
 
       - run: npm run build
 
-  android-build:
+  test-android-build:
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -114,6 +114,9 @@ jobs:
 
       - name: Decode keystore
         run: echo "${{ secrets.SIGNING_KEY_BASE64 }}" | base64 --decode > android/release.jks
+
+      - name: Fix gradlew permissions
+        run: chmod +x android/gradlew
 
       - name: Build & sign APK
         run: |
