@@ -126,3 +126,10 @@ jobs:
             --keystorepass ${{ secrets.KEY_STORE_PASSWORD }} \
             --keystorealias ${{ secrets.KEY_ALIAS }} \
             --keystorealiaspass ${{ secrets.KEY_PASSWORD }}
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug-${{ github.sha }}
+          path: android/app/build/outputs/apk/release/app-release-unsigned.apk
+          retention-days: 7

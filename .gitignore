@@ -30,4 +30,7 @@ yarn-error.log*
 .eslintcache
 
 # Android files
-android/apk-key.jks
+android/release-key.jks
+
+# Env file for holding keystore details
+.env
