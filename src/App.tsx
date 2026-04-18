@@ -18,6 +18,7 @@ import {
   getCountdowns,
   removeCountdown,
   saveCountdown,
+  updateCountdown,
 } from './utils/dataUtils';
 
 import Home from './pages/Home';
@@ -32,24 +33,39 @@ const App = () => {
   }, []);
 
   const refreshCountdowns = async () => {
-    setCountdowns(await getCountdowns());
+    const countdowns = await getCountdowns();
+    setCountdowns(Object.values(countdowns));
   };
 
-  const onCountdownCreated = async (name: string, endDate: Date) => {
+  const handleCreateCountdown = async (name: string, endDate: Date) => {
     await saveCountdown(name, new Date(endDate));
+
+    refreshCountdowns();
+  };
+
+  const handleEditCountdown = async (
+    ref: string,
+    name: string,
+    endDate: Date
+  ) => {
+    console.log(ref, name, endDate);
+    await updateCountdown(ref, name, endDate);
 
     refreshCountdowns();
   };
 
   const handleDeleteCountdown = async (ref: string) => {
     await removeCountdown(ref);
+
+    refreshCountdowns();
   };
 
   return (
     <IonApp>
       <Home
         countdowns={countdowns}
-        onCountdownCreated={onCountdownCreated}
+        handleCreateCountdown={handleCreateCountdown}
+        handleEditCountdown={handleEditCountdown}
         handleDeleteCountdown={handleDeleteCountdown}
       />
     </IonApp>

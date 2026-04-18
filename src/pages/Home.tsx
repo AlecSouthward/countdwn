@@ -19,17 +19,19 @@ import { useMemo, useRef, useState } from 'react';
 import { CountdownType } from '../types/common';
 
 import CountdownElement from '../components/countdown-element/CountdownElement';
-import DeleteModal from '../components/delete-modal/DeleteModal';
+import DeleteModal from '../components/modal/delete-modal/DeleteModal';
 
 type Props = {
   countdowns: CountdownType[];
-  onCountdownCreated: (name: string, endDate: Date) => void;
+  handleCreateCountdown: (name: string, endDate: Date) => void;
+  handleEditCountdown: (ref: string, name: string, endDate: Date) => void;
   handleDeleteCountdown: (ref: string) => void;
 };
 
 const Home = ({
   countdowns,
-  onCountdownCreated,
+  handleCreateCountdown,
+  handleEditCountdown,
   handleDeleteCountdown,
 }: Props) => {
   const [name, setName] = useState<string | null>(null);
@@ -40,6 +42,9 @@ const Home = ({
   const [countdownRefToDelete, setCountdownRefToDelete] = useState<
     string | undefined
   >(undefined);
+  const [countdownToEdit, setCountdownToEdit] = useState<
+    CountdownType | undefined
+  >();
 
   const sortedCountdowns = useMemo(
     () =>
@@ -57,7 +62,11 @@ const Home = ({
 
     modalRef.current!.dismiss();
 
-    onCountdownCreated(name, new Date(endDate));
+    if (countdownToEdit) {
+      handleEditCountdown(countdownToEdit.ref, name, new Date(endDate));
+    } else {
+      handleCreateCountdown(name, new Date(endDate));
+    }
   };
 
   const handleCountdownClick = (ref: string) => {
@@ -75,7 +84,7 @@ const Home = ({
       <IonPage>
         <IonContent fullscreen className="list-container">
           <IonButton
-            id="open-create-modal"
+            id="open-countdown-modal"
             size="large"
             shape="round"
             className="create-button"
@@ -96,6 +105,13 @@ const Home = ({
                   selectedRef={selectedCountdownRef}
                   handleClick={() => handleCountdownClick(countdown.ref)}
                   handleDeleteClick={setCountdownRefToDelete}
+                  handleEditClick={(countdown) => {
+                    setCountdownToEdit(countdown);
+                    setName(countdown.name);
+                    setEndDate(countdown.endDate.toISOString());
+
+                    modalRef.current!.present();
+                  }}
                 />
               </IonItem>
             ))}
@@ -109,8 +125,10 @@ const Home = ({
 
           <IonModal
             ref={modalRef}
-            trigger="open-create-modal"
+            trigger="open-countdown-modal"
             onIonModalWillPresent={() => {
+              if (countdownToEdit) return;
+
               setName(null);
               setEndDate(null);
             }}
@@ -126,7 +144,7 @@ const Home = ({
                 {name && endDate && (
                   <IonButtons slot="end">
                     <IonButton strong={true} onClick={handleConfirm}>
-                      Create
+                      {countdownToEdit ? 'Update' : 'Create'}
                     </IonButton>
                   </IonButtons>
                 )}
@@ -140,7 +158,7 @@ const Home = ({
                 style={{ flexDirection: 'column' }}
               >
                 <IonInput
-                  label="Countdown Name"
+                  label="Name"
                   fill="outline"
                   labelPlacement="stacked"
                   ref={modalInputRef}

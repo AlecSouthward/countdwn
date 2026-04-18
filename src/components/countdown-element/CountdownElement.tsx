@@ -16,6 +16,7 @@ type Props = {
   selectedRef: string | null;
   handleClick: () => void;
   handleDeleteClick: (ref: string) => void;
+  handleEditClick: (countdown: CountdownType) => void;
 };
 
 const CountdownElement = ({
@@ -23,6 +24,7 @@ const CountdownElement = ({
   selectedRef,
   handleClick,
   handleDeleteClick,
+  handleEditClick,
 }: Props) => {
   const isSelected = countdown.ref === selectedRef;
   const progressPercent = getPercentageBetweenDates(
@@ -84,7 +86,10 @@ const CountdownElement = ({
 
       {isSelected && (
         <>
-          <button className="selected-button">
+          <button
+            className="selected-button"
+            onClick={() => handleEditClick(countdown)}
+          >
             <IonIcon md={create} />
             <span>Edit</span>
           </button>
