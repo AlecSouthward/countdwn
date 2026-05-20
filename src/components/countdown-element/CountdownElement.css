@@ -35,6 +35,10 @@
   justify-content: center;
 }
 
+.complete > .element-container {
+  padding: 0.5rem;
+}
+
 .element-container > .info {
   display: flex;
   justify-content: space-between;
