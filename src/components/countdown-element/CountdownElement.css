@@ -41,22 +41,29 @@
 }
 
 .element-container > .info > p {
-  font-size: 1.3rem;
+  display: -webkit-box;
+  min-width: 0;
+  font-size: 1.1rem;
   font-weight: bold;
-  text-align: start;
   padding: 0;
   margin: 0;
-}
-
-.element-container.active > .info > p {
-  text-align: center;
+  width: 13rem;
+  max-height: 2.3rem;
+  text-align: start;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: no-wrap;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .element-container > .info > p.complete {
   color: var(--text-complete);
+}
+
+.element-container.active > .info > p {
+  max-height: fit-content;
+  line-clamp: 4;
+  -webkit-line-clamp: 4;
 }
 
 .element-container > .info > .date-info {

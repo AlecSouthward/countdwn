@@ -6,7 +6,7 @@
 
 .create-button {
   position: absolute;
-  bottom: 2rem;
+  bottom: 4rem;
   right: 1rem;
   z-index: 1;
   box-shadow: 2px 2px 48px 4px var(--interactible-glow);
