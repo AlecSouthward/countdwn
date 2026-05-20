@@ -67,6 +67,8 @@ const Home = ({
     } else {
       handleCreateCountdown(name, new Date(endDate));
     }
+
+    setCountdownToEdit(undefined);
   };
 
   const handleCountdownClick = (ref: string) => {

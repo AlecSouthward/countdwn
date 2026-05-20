@@ -48,7 +48,6 @@ const App = () => {
     name: string,
     endDate: Date
   ) => {
-    console.log(ref, name, endDate);
     await updateCountdown(ref, name, endDate);
 
     refreshCountdowns();
