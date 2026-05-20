@@ -18,6 +18,8 @@ import { useMemo, useRef, useState } from 'react';
 
 import { CountdownType } from '../types/common';
 
+import { getPercentageBetweenDates } from '../utils/dateUtils';
+
 import CountdownElement from '../components/countdown-element/CountdownElement';
 import DeleteModal from '../components/modal/delete-modal/DeleteModal';
 
@@ -46,11 +48,29 @@ const Home = ({
     CountdownType | undefined
   >();
 
-  const sortedCountdowns = useMemo(
-    () =>
-      countdowns.toSorted((a, b) => b.endDate.getTime() - a.endDate.getTime()),
-    [countdowns]
-  );
+  const sortedCountdowns = useMemo(() => {
+    const nowDate = Date.now();
+
+    const active = countdowns.filter(
+      (countdown) => countdown.endDate.getTime() >= nowDate
+    );
+    const completed = countdowns.filter(
+      (countdown) => countdown.endDate.getTime() < nowDate
+    );
+
+    const activeSorted = active.toSorted(
+      (a, b) =>
+        getPercentageBetweenDates(b.startDate, b.endDate) -
+        getPercentageBetweenDates(a.startDate, a.endDate)
+    );
+    const completedSorted = completed.toSorted(
+      (a, b) =>
+        getPercentageBetweenDates(b.startDate, b.endDate) -
+        getPercentageBetweenDates(a.startDate, a.endDate)
+    );
+
+    return activeSorted.concat(completedSorted);
+  }, [countdowns]);
 
   const modalRef = useRef<HTMLIonModalElement>(null);
   const modalInputRef = useRef<HTMLIonInputElement>(null);
