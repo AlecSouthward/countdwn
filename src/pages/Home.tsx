@@ -49,27 +49,26 @@ const Home = ({
   >();
 
   const sortedCountdowns = useMemo(() => {
-    const nowDate = Date.now();
+    const now = Date.now();
 
-    const active = countdowns.filter(
-      (countdown) => countdown.endDate.getTime() >= nowDate
-    );
-    const completed = countdowns.filter(
-      (countdown) => countdown.endDate.getTime() < nowDate
-    );
+    const compareByProgress = (a: CountdownType, b: CountdownType) =>
+      getPercentageBetweenDates(b.startDate, b.endDate) -
+      getPercentageBetweenDates(a.startDate, a.endDate);
 
-    const activeSorted = active.toSorted(
-      (a, b) =>
-        getPercentageBetweenDates(b.startDate, b.endDate) -
-        getPercentageBetweenDates(a.startDate, a.endDate)
-    );
-    const completedSorted = completed.toSorted(
-      (a, b) =>
-        getPercentageBetweenDates(b.startDate, b.endDate) -
-        getPercentageBetweenDates(a.startDate, a.endDate)
-    );
+    const active: CountdownType[] = [];
+    const completed: CountdownType[] = [];
 
-    return activeSorted.concat(completedSorted);
+    for (const countdown of countdowns) {
+      if (countdown.endDate.getTime() >= now) {
+        active.push(countdown);
+      } else {
+        completed.push(countdown);
+      }
+    }
+
+    return active
+      .toSorted(compareByProgress)
+      .concat(completed.toSorted(compareByProgress));
   }, [countdowns]);
 
   const modalRef = useRef<HTMLIonModalElement>(null);
