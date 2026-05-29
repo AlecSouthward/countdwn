@@ -31,6 +31,7 @@ yarn-error.log*
 
 # Android files
 android/release-key.jks
+android/app/release
 
 # Env file for holding keystore details
 .env
