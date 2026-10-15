@@ -1,7 +1,9 @@
 FROM python:3.12-alpine
 
 RUN addgroup -S countdwn_user \
-    && adduser -S countdwn_user -G countdwn_user
+    && adduser -S countdwn_user -G countdwn_user \
+    && mkdir /data \
+    && chown countdwn_user:countdwn_user /data
 
 USER countdwn_user
 

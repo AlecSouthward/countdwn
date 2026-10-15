@@ -41,7 +41,7 @@ def run(sql, args=()):
 
 def clean(data):
     if not isinstance(data, dict):
-        raise ValueError("Invalid request.")
+        raise ValueError("Invalid request.")  # noqa: TRY004 - ValueError maps to a 400
     title = str(data.get("title", "")).strip()
     if not title or len(title) > 200:
         raise ValueError("Title is required (max 200 characters).")
@@ -131,11 +131,15 @@ class Handler(BaseHTTPRequestHandler):
         self.send(204 if n else 404, None if n else {"error": NOT_FOUND_MSG})
 
 
-if __name__ == "__main__":
+def init_db():
     con = sqlite3.connect(DB_PATH)
     con.execute("PRAGMA journal_mode=WAL")
     con.execute(SCHEMA)
     con.commit()
     con.close()
+
+
+if __name__ == "__main__":
+    init_db()
     print(f"Countdwn listening on http://{HOST}:{PORT}  (db: {DB_PATH})")
     ThreadingHTTPServer((HOST, PORT), Handler).serve_forever()

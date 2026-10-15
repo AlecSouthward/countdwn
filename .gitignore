@@ -9,3 +9,9 @@
 
 # Ignore database files
 data/
+*.db
+*.db-wal
+*.db-shm
+
+# python
+__pycache__/
