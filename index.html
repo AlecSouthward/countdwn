@@ -1,30 +1,256 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Countdwn</title>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0a0a0b">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="/manifest.json">
+<title>Countdwn</title>
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #0a0a0b; --card: #151516; --line: #2a2a2c; --track: #070708;
+    --text: #f2f2f3; --muted: #8d8d92; --dim: #5c5c60; --accent: #4f9dff; --danger: #ff6b6b;
+  }
+  * { box-sizing: border-box; user-select: none; }
+  html, body { margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.3 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 560px; margin: 0 auto; padding: 20px 16px 48px; }
+  header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  h1 { font-size: 1.4rem; margin: 0; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+  h1 img { width: 26px; height: 26px; pointer-events: none; }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-    <base href="/" />
+  .btn { background: var(--accent); color: #04121f; border: 0; border-radius: 999px;
+    padding: 9px 16px; font-weight: 600;
+    transition: background-color .15s, color .15s, border-color .15s, opacity .15s, transform .1s; }
+  .btn:active { transform: scale(.96); }
+  .btn:disabled { opacity: .6; cursor: progress; transform: none; }
+  .btn.ghost { background: transparent; color: var(--text); border: 1px solid var(--line); }
+  .btn.danger { background: transparent; color: var(--danger); border: 1px solid var(--line); margin-right: auto; }
+  .btn.danger.armed { background: var(--danger); color: #1a0505; border-color: var(--danger); }
 
-    <meta name="color-scheme" content="dark" />
-    <meta
-      name="viewport"
-      content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    />
-    <meta name="format-detection" content="telephone=no" />
-    <meta name="msapplication-tap-highlight" content="no" />
+  #list { display: flex; flex-direction: column; gap: 12px; }
+  .card { width: 100%; text-align: left; background: var(--card); border: 1px solid var(--line);
+    border-radius: 22px; padding: 18px 20px; transition: border-color .15s, transform .1s; }
+  @media (hover: hover) { .card:hover { border-color: #3a3a3d; } }
+  .card:active { transform: scale(.99); }
+  .row { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  .title { margin: 0; font-size: 1.35rem; font-weight: 700; overflow-wrap: anywhere; }
+  .right { text-align: right; white-space: nowrap; }
+  .left { display: block; font-size: 1.15rem; font-weight: 700; }
+  .date { color: var(--muted); font-size: .95rem; }
+  .bar { height: 10px; margin-top: 14px; background: var(--track); border-radius: 999px; overflow: hidden; }
+  .bar i { display: block; height: 100%; background: var(--accent); border-radius: 999px; }
+  .card.past { padding: 14px 20px; }
+  .card.past .title, .card.past .date { color: var(--dim); }
+  .card.past .title { font-size: 1.15rem; }
+  .card.past .row { align-items: center; }
 
-    <link rel="manifest" href="/manifest.json" />
+  #status { color: var(--muted); text-align: center; margin: 40px 0; animation: fade .3s ease-out; }
 
-    <link rel="shortcut icon" type="image/svg" href="/favicon.svg" />
+  /* First paint after load: cards rise in with a short stagger, bars fill from zero. */
+  #list.intro .card { animation: rise .35s cubic-bezier(.2,.7,.3,1) backwards;
+    animation-delay: calc(min(var(--i), 8) * 40ms); }
+  #list.intro .bar i { animation: grow .7s cubic-bezier(.2,.7,.3,1) backwards;
+    animation-delay: calc(min(var(--i), 8) * 40ms + 150ms); }
 
-    <!-- add to home screen for ios -->
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-title" content="Ionic App" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+  /* Loading skeleton: held back briefly so fast responses never flash it. */
+  .skel { height: 92px; border-radius: 22px; border: 1px solid var(--line);
+    background: linear-gradient(100deg, var(--card) 40%, #1d1d1f 50%, var(--card) 60%) 0 0 / 300% 100%;
+    animation: fade .3s .2s ease-out backwards, shimmer 1.4s linear infinite; }
+  .skel:nth-child(2) { opacity: .7; }
+  .skel:nth-child(3) { opacity: .4; }
+
+  @keyframes rise { from { opacity: 0; transform: translateY(8px); } }
+  @keyframes grow { from { width: 0; } }
+  @keyframes fade { from { opacity: 0; } }
+  @keyframes pop { from { opacity: 0; transform: translateY(8px) scale(.98); } }
+  @keyframes shimmer { to { background-position: -150% 0; } }
+
+  dialog { width: min(440px, calc(100% - 32px)); background: var(--card); color: var(--text);
+    border: 1px solid var(--line); border-radius: 22px; padding: 22px; }
+  dialog[open] { animation: pop .2s cubic-bezier(.2,.7,.3,1); }
+  dialog::backdrop { background: rgba(0,0,0,.6); }
+  dialog[open]::backdrop { animation: fade .2s ease-out; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after, ::backdrop { animation: none !important; transition: none !important; }
+  }
+  label { display: block; color: var(--muted); font-size: .9rem; margin-top: 14px; }
+  input { width: 100%; margin-top: 6px; padding: 11px 12px; font: inherit; font-size: 16px;
+    color: var(--text); background: var(--bg); border: 1px solid var(--line); border-radius: 12px; }
+  #err { color: var(--danger); min-height: 1.2em; margin: 12px 0 0; font-size: .9rem; }
+  .actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1><img src="/favicon.svg" alt="">Countdwn</h1>
+    <button class="btn" id="add">New countdown</button>
+  </header>
+  <div id="list" aria-busy="true"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
+  <p id="status" hidden></p>
+</main>
+
+<dialog id="dlg">
+  <form id="form" method="dialog">
+    <h2 id="dlgTitle" style="margin:0;font-size:1.2rem">Countdown</h2>
+    <label>Title <input id="title" required maxlength="200" autocomplete="off"></label>
+    <label>Start Date <input id="start" type="date" required></label>
+    <label>Completion Date <input id="target" type="date" required></label>
+    <p id="err" role="alert"></p>
+    <div class="actions">
+      <button type="button" class="btn danger" id="del">Delete</button>
+      <button type="button" class="btn ghost" id="cancel">Cancel</button>
+      <button type="submit" class="btn">Save</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+const $ = s => document.querySelector(s);
+const DAY = 864e5;
+let items = [], editing = null;
+
+const parse = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+const today = () => { const n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate()); };
+const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+const days = (a, b) => Math.round((a - b) / DAY);
+const fmt = s => parse(s).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: '2-digit' });
+
+function timeLeft(d) {
+  if (d === 0) return 'Today';
+  if (d === 1) return '1 day';
+  if (d < 60) return `${d} days`;
+  if (d < 365) return `${Math.round(d / 30.44)} months`;
+  const y = Math.round(d / 365.25 * 10) / 10;
+  return y === 1 ? '1 year' : `${y} years`;
+}
+
+function el(tag, cls, text) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text !== undefined) e.textContent = text;
+  return e;
+}
+
+function card(item, t, i) {
+  const left = days(parse(item.target), t);
+  const past = left < 0;
+  const c = el('button', 'card' + (past ? ' past' : ''));
+  c.type = 'button';
+  c.style.setProperty('--i', i);
+  const row = el('div', 'row');
+  row.append(el('h2', 'title', item.title));
+  const right = el('div', 'right');
+  if (!past) right.append(el('span', 'left', timeLeft(left)));
+  right.append(el('span', 'date', fmt(item.target)));
+  row.append(right);
+  c.append(row);
+  if (!past) {
+    const total = days(parse(item.target), parse(item.start));
+    const done = days(t, parse(item.start));
+    const pct = total <= 0 ? 100 : Math.min(100, Math.max(0, done / total * 100));
+    const bar = el('div', 'bar');
+    const fill = el('i');
+    fill.style.width = pct + '%';
+    bar.append(fill);
+    c.append(bar);
+  }
+  c.onclick = () => openDialog(item);
+  return c;
+}
+
+function render(intro = false) {
+  const t = today();
+  const up = items.filter(i => parse(i.target) >= t).sort((a, b) => a.target.localeCompare(b.target));
+  const past = items.filter(i => parse(i.target) < t).sort((a, b) => b.target.localeCompare(a.target));
+  const list = $('#list');
+  list.classList.toggle('intro', intro);
+  list.removeAttribute('aria-busy');
+  list.replaceChildren(...[...up, ...past].map((item, i) => card(item, t, i)));
+  setStatus(items.length ? '' : 'No countdowns yet. Add one to get started.');
+}
+
+function setStatus(msg) { $('#status').textContent = msg; $('#status').hidden = !msg; }
+
+async function api(method, path, body) {
+  const r = await fetch('/api/countdowns' + (path ?? ''), {
+    method,
+    headers: body ? { 'Content-Type': 'application/json' } : {},
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Request failed');
+  return r.status === 204 ? null : r.json();
+}
+
+let loaded = false;
+async function load() {
+  try { items = await api('GET'); render(!loaded); loaded = true; }
+  catch {
+    if (!loaded) { $('#list').replaceChildren(); $('#list').removeAttribute('aria-busy'); }
+    setStatus('Failed to reach the server. Check your connection.');
+  }
+}
+
+// Disables the dialog's buttons and swaps the clicked one's label while a request is in flight.
+async function busy(btn, label, fn) {
+  const btns = $('#form').querySelectorAll('button'), text = btn.textContent;
+  btns.forEach(b => b.disabled = true);
+  btn.textContent = label;
+  try { await fn(); }
+  finally { btns.forEach(b => b.disabled = false); btn.textContent = text; }
+}
+
+function openDialog(item) {
+  editing = item;
+  $('#dlgTitle').textContent = item ? 'Edit countdown' : 'New countdown';
+  $('#title').value = item ? item.title : '';
+  $('#target').value = item ? item.target : '';
+  $('#start').value = item ? item.start : iso(today());
+  $('#del').hidden = !item;
+  $('#del').textContent = 'Delete';
+  $('#del').classList.remove('armed');
+  $('#err').textContent = '';
+  $('#dlg').showModal();
+  if (!item) $('#title').focus();
+}
+
+$('#add').onclick = () => openDialog(null);
+$('#cancel').onclick = () => $('#dlg').close();
+
+$('#form').onsubmit = async e => {
+  e.preventDefault();
+  const body = { title: $('#title').value, target: $('#target').value, start: $('#start').value };
+  await busy(e.submitter ?? $('#form [type=submit]'), 'Saving…', async () => {
+    try {
+      await (editing ? api('PUT', '/' + editing.id, body) : api('POST', '', body));
+      $('#dlg').close();
+      load();
+    } catch (err) { $('#err').textContent = err.message; }
+  });
+};
+
+$('#del').onclick = async () => {
+  const b = $('#del');
+  if (!b.classList.contains('armed')) {
+    b.classList.add('armed');
+    b.textContent = 'Tap again to delete';
+    return;
+  }
+  await busy(b, 'Deleting…', async () => {
+    try { await api('DELETE', '/' + editing.id); $('#dlg').close(); load(); }
+    catch (err) { $('#err').textContent = err.message; }
+  });
+};
+
+load();
+setInterval(render, 60000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) load(); });
+</script>
+</body>
 </html>

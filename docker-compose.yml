@@ -1,0 +1,9 @@
+services:
+  countdwn:
+    build: .
+    restart: unless-stopped
+    ports:
+      # Bind to your VPN interface IP, e.g. BIND_IP=10.8.0.1 docker compose up -d
+      - "${BIND_IP:-127.0.0.1}:8080:8080"
+    volumes:
+      - ./data:/data
