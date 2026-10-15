@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Countdwn: stdlib-only server. One SQLite file, four endpoints, one static page."""
 import json
 import os
