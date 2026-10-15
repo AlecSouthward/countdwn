@@ -58,6 +58,7 @@ jobs:
             sleep 0.5
           done
           curl -sf http://localhost:8080/ | grep -q '<title>Countdwn</title>'
+          curl -sf http://localhost:8080/favicon.svg | grep -q '<svg'
           curl -sf -X POST http://localhost:8080/api/countdowns \
             -H 'Content-Type: application/json' \
             -d '{"title":"CI","target":"2030-01-01"}' | grep -q '"title": "CI"'

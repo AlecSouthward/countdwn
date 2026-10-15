@@ -62,6 +62,17 @@ class ServerTest(unittest.TestCase):
             self.assertIn("text/html", r.headers["Content-Type"])
             self.assertIn(b"<title>Countdwn</title>", r.read())
 
+    def test_static_files_served(self):
+        for name, ctype in [("favicon.svg", "image/svg+xml"), ("manifest.json", "application/manifest+json")]:
+            with self.subTest(name=name), urlopen(f"{self.base}/{name}") as r:
+                self.assertEqual(r.headers["Content-Type"], ctype)
+                self.assertEqual(r.read(), (server.PUBLIC / name).read_bytes())
+
+    def test_static_files_stay_in_public(self):
+        for path in ["/server.py", "/../server.py", "/%2e%2e/server.py", "/public/icon.svg", "/missing.svg"]:
+            with self.subTest(path=path):
+                self.assertEqual(self.request("GET", path)[0], 404)
+
     def test_list_empty(self):
         self.assertEqual(self.request("GET", "/api/countdowns"), (200, []))
 

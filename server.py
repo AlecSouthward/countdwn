@@ -13,6 +13,13 @@ DB_PATH = os.environ.get("DB_PATH", "countdwn.db")
 HOST = os.environ.get("HOST", "127.0.0.1")
 PORT = int(os.environ.get("PORT", "8080"))
 INDEX = Path(__file__).with_name("index.html")
+PUBLIC = Path(__file__).with_name("public")
+STATIC_TYPES = {
+    ".svg": "image/svg+xml",
+    ".png": "image/png",
+    ".ico": "image/x-icon",
+    ".json": "application/manifest+json",
+}
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS countdowns (
@@ -91,6 +98,10 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/countdowns":
             rows, _, _ = run("SELECT id, title, target, start FROM countdowns ORDER BY target")
             return self.send(200, rows)
+        # Top-level files from public/ only: no slashes, so no way out of the directory.
+        m = re.fullmatch(r"/([\w-]+(\.\w+))", path)
+        if m and m.group(2) in STATIC_TYPES and (PUBLIC / m.group(1)).is_file():
+            return self.send(200, (PUBLIC / m.group(1)).read_bytes(), STATIC_TYPES[m.group(2)])
         self.send(404, {"error": NOT_FOUND_MSG})
 
     def do_POST(self):

@@ -9,6 +9,7 @@ USER countdwn_user
 
 WORKDIR /app
 COPY server.py index.html ./
+COPY public ./public
 ENV HOST=0.0.0.0 PORT=8080 DB_PATH=/data/countdwn.db
 VOLUME /data
 EXPOSE 8080
