@@ -1,5 +1,0 @@
-{
-  "name": "countdwn",
-  "integrations": { "capacitor": {} },
-  "type": "react-vite"
-}
