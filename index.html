@@ -11,7 +11,7 @@
   :root {
     color-scheme: dark;
     --bg: #0a0a0b; --card: #151516; --line: #2a2a2c; --track: #070708;
-    --text: #f2f2f3; --muted: #8d8d92; --dim: #5c5c60; --accent: #4f9dff; --danger: #ff6b6b;
+    --text: #f2f2f3; --muted: #8d8d92; --dim: #5c5c60; --accent: #4f9dff; --danger: #ff6b6b; --positive: #4cff97;
   }
   * { box-sizing: border-box; user-select: none; }
   html, body { margin: 0; background: var(--bg); color: var(--text);
@@ -48,6 +48,7 @@
   .card.past .title, .card.past .date { color: var(--dim); }
   .card.past .title { font-size: 1.15rem; }
   .card.past .row { align-items: center; }
+  .card.near .bar i { background: var(--positive); }
 
   #status { color: var(--muted); text-align: center; margin: 40px 0; animation: fade .3s ease-out; }
 
@@ -124,7 +125,7 @@ const fmt = s => parse(s).toLocaleDateString('en-US', { month: 'short', day: '2-
 
 function timeLeft(d) {
   if (d === 0) return 'Today';
-  if (d === 1) return '1 day';
+  if (d === 1) return 'Tomorrow';
   if (d < 60) return `${d} days`;
   if (d < 365) return `${Math.round(d / 30.44)} months`;
   const y = Math.round(d / 365.25 * 10) / 10;
@@ -141,7 +142,7 @@ function el(tag, cls, text) {
 function card(item, t, i) {
   const left = days(parse(item.target), t);
   const past = left < 0;
-  const c = el('button', 'card' + (past ? ' past' : ''));
+  const c = el('button', 'card' + (past ? ' past' : '') + (left == 1 || left == 0 ? ' near' : ''));
   c.type = 'button';
   c.style.setProperty('--i', i);
   const row = el('div', 'row');
@@ -151,6 +152,7 @@ function card(item, t, i) {
   right.append(el('span', 'date', fmt(item.target)));
   row.append(right);
   c.append(row);
+  // c.classList.append('a');
   if (!past) {
     const total = days(parse(item.target), parse(item.start));
     const done = days(t, parse(item.start));
